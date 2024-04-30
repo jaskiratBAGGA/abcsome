@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anomaly Detection</title>
+</head>
+<body>
+    <h1>Anomaly Detection</h1>
+    <form method="post" action="{{ url_for('predict') }}">
+        <label for="input_data">Input Data:</label>
+        <input type="text" id="input_data" name="input_data" required>
+        <input type="submit" value="Predict">
+    </form>
+    {% if prediction %}
+        <h2>Prediction Result:</h2>
+        <p>Predicted Class: {{ prediction.predicted_class }}</p>
+        <p>Predicted Label: {{ prediction.predicted_label }}</p>
+        <p>Raw Output: {{ prediction.raw_out }}</p>
+        <p>Probabilities: {{ prediction.probabilities }}</p>
+        <p>Confidence: {{ prediction.confidence }}</p>
+    {% endif %}
+</body>
+</html>
