@@ -6,29 +6,25 @@ import numpy as np
 import torch
 
 app = Flask(__name__)
+
 model_path = os.path.join(".", "wights_raw.pickle")
 scaler_path = os.path.join(".", "scaler.pkl")
+
 print(f"Loading model from: {model_path}")
 print(f"Loading scaler from: {scaler_path}")
+
 model, meta_data = load_model(model_path)
 scaler = joblib.load(scaler_path)
+
 class_mapping = {0: "Normal", 1: "Pre-Failure", 2: "Failure"}
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     prediction = None
     if request.method == 'POST':
-        input_data = request.form['input_data'].split(',')
-        input_data = [float(x) for x in input_data]
+        input_data = [float(x) for x in request.form['input_data'].split(',')]
         prediction = make_prediction(input_data)
-    return render_template('index.html', prediction=prediction)  # Change 'body.html' to 'index.html'
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    input_data = request.form['input_data'].split(',')
-    input_data = [float(x) for x in input_data]
-    prediction = make_prediction(input_data)
-    return str(prediction)
+    return render_template('index.html', prediction=prediction)
 
 def make_prediction(data):
     data_t = np.array(data, dtype=np.float32)

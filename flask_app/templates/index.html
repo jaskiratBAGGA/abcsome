@@ -1,22 +1,172 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Anomaly Detection</title>
+    <title>Machinery Anomaly Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .result {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .content {
+            display: none;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .content.show {
+            display: block;
+        }
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .buttons button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .team-members-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .team-member {
+            text-align: center;
+            margin: 10px;
+        }
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
-    <h1>Anomaly Detection</h1>
-    <form method="post" action="{{ url_for('predict') }}">
-        <label for="input_data">Input Data:</label>
-        <input type="text" id="input_data" name="input_data" required>
-        <input type="submit" value="Predict">
-    </form>
-    {% if prediction %}
-        <h2>Prediction Result:</h2>
-        <p>Predicted Class: {{ prediction.predicted_class }}</p>
-        <p>Predicted Label: {{ prediction.predicted_label }}</p>
-        <p>Raw Output: {{ prediction.raw_out }}</p>
-        <p>Probabilities: {{ prediction.probabilities }}</p>
-        <p>Confidence: {{ prediction.confidence }}</p>
-    {% endif %}
+    <h1>Machinery Anomaly Detection</h1>
+    <div class="buttons">
+        <button id="home-btn">Home</button>
+        <button id="team-btn">Team</button>
+        <button id="dataset-btn">Dataset</button>
+    </div>
+    <div class="content home show">
+        <form method="post">
+            <label for="input_data">Input Data (comma-separated values):</label>
+            <input type="text" id="input_data" name="input_data" required>
+            <input type="submit" value="Predict">
+        </form>
+        {% if prediction %}
+        <div class="result">
+            <h2>Prediction Result:</h2>
+            <p><strong>Predicted Class:</strong> {{ prediction.predicted_class }}</p>
+            <p><strong>Predicted Label:</strong> {{ prediction.predicted_label }}</p>
+            <p><strong>Raw Output:</strong> {{ prediction.raw_out }}</p>
+            <p><strong>Probabilities:</strong> {{ prediction.probabilities }}</p>
+            <p><strong>Confidence:</strong> {{ prediction.confidence }}</p>
+        </div>
+        {% endif %}
+    </div>
+    <div class="content team">
+        <h2>About the Team</h2>
+        <div class="team-members-container">
+            <div class="team-member">
+                <img src="{{ url_for('static', filename='ar.jpg') }}" alt="Aranyak Karan">
+                <p>Aranyak Karan</p>
+            </div>
+            <div class="team-member">
+                <img src="{{ url_for('static', filename='ak.jpg') }}" alt="Akash Alaria">
+                <p>Akash Alaria</p>
+            </div>
+            <div class="team-member">
+                <img src="{{ url_for('static', filename='jb.jpg') }}" alt="Jaskirat Singh Bagga">
+                <p>Jaskirat Singh Bagga</p>
+            </div>
+            <div class="team-member">
+                <img src="{{ url_for('static', filename='sb.jpg') }}" alt="Sparsh Baliyan">
+                <p>Sparsh Baliyan</p>
+            </div>
+        </div>
+    </div>
+    <div class="content dataset">
+        <h2>About the Dataset</h2>
+        <p>This project uses the MetroPt dataset, which contains sensor data collected from metro trains in Portugal. The dataset includes various measurements related to the trains' operations and maintenance.</p>
+    </div>
+
+    <script>
+        // JavaScript to toggle the visibility of different sections
+        const homeBtn = document.getElementById('home-btn');
+        const teamBtn = document.getElementById('team-btn');
+        const datasetBtn = document.getElementById('dataset-btn');
+        const homeContent = document.querySelector('.content.home');
+        const teamContent = document.querySelector('.content.team');
+        const datasetContent = document.querySelector('.content.dataset');
+
+        homeBtn.addEventListener('click', () => {
+            homeContent.classList.add('show');
+            teamContent.classList.remove('show');
+            datasetContent.classList.remove('show');
+        });
+
+        teamBtn.addEventListener('click', () => {
+            teamContent.classList.add('show');
+            homeContent.classList.remove('show');
+            datasetContent.classList.remove('show');
+        });
+
+        datasetBtn.addEventListener('click', () => {
+            datasetContent.classList.add('show');
+            homeContent.classList.remove('show');
+            teamContent.classList.remove('show');
+        });
+    </script>
 </body>
 </html>
